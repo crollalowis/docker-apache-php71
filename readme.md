@@ -1,5 +1,7 @@
 # Docker image for Craft CMS
 
+> docker pull burnett01/docker-craftcms
+
 ### PHP 7.1
 
 - gd 
