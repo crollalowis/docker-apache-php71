@@ -4,6 +4,7 @@ COPY config/php.ini /usr/local/etc/php/
 
 # Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    mysql-client \
   	libjpeg-dev \
   	libpng12-dev \
     libmagickwand-dev \
@@ -23,22 +24,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pecl install imagick \
   && docker-php-ext-enable imagick
 
-# Composer & Craft CMS
+# Composer & Craft CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer \
-  && composer create-project craftcms/craft
+  && composer global require craft-cli/cli
+
+#&& composer create-project craftcms/craft /var/www/html/
 
 ENV PATH "$PATH:~/.composer/vendor/bin"
 
 # Go
 RUN curl --insecure -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz \
   && tar -xvf go1.9.linux-amd64.tar.gz \
-  && mv go /usr/local
+  && mv go /usr/local \
+  && cp /usr/local/go/bin/go /usr/local/bin
 
 # Mhsendmail
-# RUN go get github.com/mailhog/mhsendmail \
-#   && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+RUN go get github.com/mailhog/mhsendmail \
+  && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
+# Apache Extensions
 RUN a2enmod headers rewrite expires deflate
 
-CMD ["apache2-foreground"]
+# Entrypoint
+COPY bootstrap/entry.sh /usr/local/bin/
+RUN ln -s usr/local/bin/entry.sh /entry.sh
+
+ENTRYPOINT ["entry.sh"]
