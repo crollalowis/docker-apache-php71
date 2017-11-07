@@ -11,10 +11,6 @@ Download:
 > docker pull crollalowis/docker-apache-php71
 
 
-Compose:
-
-Check [CraftCMS-Acme](https://gitlab.com/Burnett01/craftcms-acme) for a boilerplate.
-
 ---
 
 ## Dependencies:
