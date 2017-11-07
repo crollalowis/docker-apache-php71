@@ -1,13 +1,14 @@
-# Docker image for Craft CMS
+# Docker image for with Apache and PHP7.1
+
+Prepared to use with Craft CMS
 
 This image installs all assets that are required by Craft CMS.
-In addition, it automatically downloads Craft CMS by using Craft CLI.
 
 ---
 
 Download:
 
-> docker pull burnett01/docker-craftcms
+> docker pull crollalowis/docker-apache-php71
 
 
 Compose:
