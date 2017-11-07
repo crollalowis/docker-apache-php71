@@ -32,7 +32,7 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php \
 
 #&& composer create-project craftcms/craft /var/www/html/
 
-ENV PATH "$PATH:~/.composer/vendor/bin"
+ENV PATH "$PATH:~/.composer/vendor/bin:/usr/local/bin"
 
 # Go
 RUN curl --insecure -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz \
@@ -49,6 +49,6 @@ RUN a2enmod headers rewrite expires deflate
 
 # Entrypoint
 COPY bootstrap/entry.sh /usr/local/bin/
-RUN ln -s usr/local/bin/entry.sh /entry.sh
+# RUN ln -s /usr/local/bin/entry.sh /entry.sh
 
 ENTRYPOINT ["entry.sh"]
