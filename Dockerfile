@@ -26,9 +26,8 @@ RUN pecl install imagick \
 
 # Composer & Craft CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
-  && mv composer.phar /usr/local/bin/composer 
-  # \
-# && composer global require craft-cli/cli
+  && mv composer.phar /usr/local/bin/composer \
+  && composer global require craft-cli/cli
 
 #&& composer create-project craftcms/craft /var/www/html/
 
@@ -48,7 +47,7 @@ RUN go get github.com/mailhog/mhsendmail \
 RUN a2enmod headers rewrite expires deflate
 
 # Entrypoint
-COPY bootstrap/entry.sh /usr/local/bin/
-# RUN ln -s /usr/local/bin/entry.sh /entry.sh
+COPY bootstrap/entry.sh /usr/local/bin/entry
+RUN chmod +x /usr/local/bin/entry
 
-ENTRYPOINT ["entry.sh"]
+ENTRYPOINT ["/usr/local/bin/entry"]
