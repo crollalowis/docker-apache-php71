@@ -6,15 +6,17 @@ COPY config/php.ini /usr/local/etc/php/
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mysql-client \
   	libjpeg-dev \
-  	libpng12-dev \
+  	libpng-dev \
     libmagickwand-dev \
     libmcrypt-dev \
+    sudo \
     git \
     zip \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-install gd \
   && docker-php-ext-install zip \
   && docker-php-ext-install exif \
+  && docker-php-ext-install intl \
   && docker-php-ext-install mbstring \
   && docker-php-ext-install mcrypt \
   && docker-php-ext-install mysqli pdo pdo_mysql \
@@ -28,6 +30,12 @@ RUN pecl install imagick \
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer \
   && composer global require craft-cli/cli
+
+
+# add user with sudo
+
+# RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+# USER docker
 
 #&& composer create-project craftcms/craft /var/www/html/
 
@@ -46,8 +54,15 @@ RUN go get github.com/mailhog/mhsendmail \
 # Apache Extensions
 RUN a2enmod headers rewrite expires deflate
 
+
 # Entrypoint
 COPY bootstrap/entry.sh /usr/local/bin/entry
 RUN chmod +x /usr/local/bin/entry
+
+# change owner of web-root
+RUN chown www-data:www-data /var/www
+
+# we are currently running around as root
+# USER www-data
 
 ENTRYPOINT ["/usr/local/bin/entry"]

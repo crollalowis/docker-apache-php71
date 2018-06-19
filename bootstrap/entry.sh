@@ -1,15 +1,7 @@
 #!/bin/bash
-	
-cd /var/www/html/
 
-# Download Craft CMS by using Craft CLI
-# If Craft CMS exists already, the download will be skipped.
+cd /var/www
 
-# echo "Downloading Craft CMS..."
-
-# craft download --terms --no-prompt
-
-# Run Apache2
-
+# Run Apache2 (as root)
 apache2-foreground
 
