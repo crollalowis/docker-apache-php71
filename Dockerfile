@@ -56,9 +56,12 @@ RUN curl --insecure -O https://storage.googleapis.com/golang/go1.9.linux-amd64.t
 RUN go get github.com/mailhog/mhsendmail \
   && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
+
+ENV APACHE_RUN_USER=www-data
+ENV APACHE_RUN_GROUP=www-data
+
 # Apache Extensions
 RUN a2enmod headers rewrite expires deflate
-
 
 # Entrypoint
 COPY bootstrap/entry.sh /usr/local/bin/entry

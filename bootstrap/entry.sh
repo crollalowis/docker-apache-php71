@@ -2,6 +2,6 @@
 
 cd /var/www
 
-# Run Apache2 (as root)
+# Run Apache
 apache2-foreground
 
