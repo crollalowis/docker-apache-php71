@@ -4,7 +4,7 @@ COPY config/php.ini /usr/local/etc/php/
 
 # Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    mysql-client \
+    default-mysql-client \
     libjpeg-dev \
     libpng-dev \
     libmagickwand-dev \
