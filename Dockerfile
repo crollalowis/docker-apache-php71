@@ -4,7 +4,7 @@ COPY config/php.ini /usr/local/etc/php/
 
 # Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    mysql-client \
+    default-mysql-client \
     libjpeg-dev \
     libpng-dev \
     libmagickwand-dev \
@@ -57,7 +57,7 @@ RUN go get github.com/mailhog/mhsendmail \
   && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
 # Apache Extensions
-RUN a2enmod headers rewrite expires deflate
+RUN a2enmod headers rewrite expires deflate proxy_http
 
 
 # Entrypoint
