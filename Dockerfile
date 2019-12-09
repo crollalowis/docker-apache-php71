@@ -1,29 +1,32 @@
-FROM php:7.1-apache
+FROM php:7.3-apache
 
 COPY config/php.ini /usr/local/etc/php/
 
 # Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    mysql-client \
-  	libjpeg-dev \
-  	libpng-dev \
-    libmagickwand-dev \
-    libmcrypt-dev \
-    sudo \
-    git \
-    zip \
-  && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-  && docker-php-ext-install gd \
-  && docker-php-ext-install zip \
-  && docker-php-ext-install exif \
-  && docker-php-ext-install intl \
-  && docker-php-ext-install mbstring \
-  && docker-php-ext-install mcrypt \
-  && docker-php-ext-install mysqli pdo pdo_mysql \
-  && rm -rf /var/lib/apt/lists/*
+  libsqlite3-dev \
+  libzip-dev \
+  libjpeg-dev \
+  libpng-dev \
+  libmcrypt-dev \
+  libmagickwand-dev \
+  sudo \
+  git \
+  zip
 
-# Imagick
+RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install mysqli pdo_mysql pdo_sqlite
+RUN rm -rf /var/lib/apt/lists/*
+
+# PECL
 RUN pecl install imagick \
+  && pecl install mcrypt \
+  && docker-php-ext-enable mcrypt \
   && docker-php-ext-enable imagick
 
 # Composer & Craft CLI
